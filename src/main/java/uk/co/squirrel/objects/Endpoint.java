@@ -5,6 +5,9 @@ public class Endpoint {
     private String endpointName;
     private String endpointUrl;
 
+    public Endpoint(){
+    }
+    
     public Endpoint(String name, String url){
         endpointName = name;
         endpointUrl = url;
