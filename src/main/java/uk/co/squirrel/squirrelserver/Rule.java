@@ -14,20 +14,11 @@ public class Rule {
     private Integer id;
     
     private String ruleName;
-    private String requestName;
+    private String inputName;
     private String comparator;
-    private int requestValue;
-    private String responseName;
-    private int responseValue;
-    private String outMessageEndpoint;
-
-    public String getRuleName() {
-        return ruleName;
-    }
-
-    public void setRuleName(String ruleName) {
-        this.ruleName = ruleName;
-    }
+    private int inputValue;
+    private String outputName;
+    private int outputValue;
 
     public Integer getId() {
         return id;
@@ -37,44 +28,20 @@ public class Rule {
         this.id = id;
     }
 
-    public String getRequestName() {
-        return requestName;
+    public String getRuleName() {
+        return ruleName;
     }
 
-    public void setRequestName(String requestName) {
-        this.requestName = requestName;
+    public void setRuleName(String ruleName) {
+        this.ruleName = ruleName;
     }
 
-    public int getRequestValue() {
-        return requestValue;
+    public String getInputName() {
+        return inputName;
     }
 
-    public void setRequestValue(int requestValue) {
-        this.requestValue = requestValue;
-    }
-
-    public String getResponseName() {
-        return responseName;
-    }
-
-    public void setResponseName(String responseName) {
-        this.responseName = responseName;
-    }
-
-    public int getResponseValue() {
-        return responseValue;
-    }
-
-    public void setResponseValue(int responseValue) {
-        this.responseValue = responseValue;
-    }
-
-    public String getOutMessageEndpoint() {
-        return outMessageEndpoint;
-    }
-
-    public void setOutMessageEndpoint(String outMessageEndpoint) {
-        this.outMessageEndpoint = outMessageEndpoint;
+    public void setInputName(String inputName) {
+        this.inputName = inputName;
     }
 
     public String getComparator() {
@@ -83,6 +50,30 @@ public class Rule {
 
     public void setComparator(String comparator) {
         this.comparator = comparator;
+    }
+
+    public int getInputValue() {
+        return inputValue;
+    }
+
+    public void setInputValue(int inputValue) {
+        this.inputValue = inputValue;
+    }
+
+    public String getOutputName() {
+        return outputName;
+    }
+
+    public void setOutputName(String outputName) {
+        this.outputName = outputName;
+    }
+
+    public int getOutputValue() {
+        return outputValue;
+    }
+
+    public void setOutputValue(int outputValue) {
+        this.outputValue = outputValue;
     }
     
 }

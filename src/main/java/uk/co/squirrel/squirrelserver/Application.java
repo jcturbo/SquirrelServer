@@ -6,9 +6,6 @@ import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import uk.co.squirrel.objects.Endpoint;
-import uk.co.squirrel.objects.Message;
-import uk.co.squirrel.objects.OutputMessage;
 
 @SpringBootApplication
 public class Application {
@@ -19,7 +16,7 @@ public class Application {
     private ArrayList<Endpoint> endpoints;
     
     private final LinkedBlockingQueue<Message> inputMessageQueue;
-    private final LinkedBlockingQueue<OutputMessage> outputMessageQueue;
+    private final LinkedBlockingQueue<Message> outputMessageQueue;
     private Thread outputProcessor;
     private MessageProcessor messageProcessor;
             

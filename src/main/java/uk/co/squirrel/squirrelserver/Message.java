@@ -1,4 +1,4 @@
-package uk.co.squirrel.objects;
+package uk.co.squirrel.squirrelserver;
 
 public class Message {
 

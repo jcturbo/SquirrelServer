@@ -2,17 +2,15 @@ package uk.co.squirrel.squirrelserver;
 
 import java.util.ArrayList;
 import java.util.concurrent.LinkedBlockingQueue;
-import uk.co.squirrel.objects.Message;
-import uk.co.squirrel.objects.OutputMessage;
 
 public class MessageProcessor extends Thread {
 
     private RuleRepository ruleRepository;
     private ArrayList<Rule> rules;
     private LinkedBlockingQueue<Message> inputMessageQueue;
-    private LinkedBlockingQueue<OutputMessage> outputMessageQueue;
+    private LinkedBlockingQueue<Message> outputMessageQueue;
             
-    public MessageProcessor(LinkedBlockingQueue<Message> p_inputMessageQueue, LinkedBlockingQueue<OutputMessage> p_outputMessageQueue, RuleRepository p_ruleRepository){
+    public MessageProcessor(LinkedBlockingQueue<Message> p_inputMessageQueue, LinkedBlockingQueue<Message> p_outputMessageQueue, RuleRepository p_ruleRepository){
         inputMessageQueue = p_inputMessageQueue;
         outputMessageQueue = p_outputMessageQueue;
         ruleRepository = p_ruleRepository;
@@ -27,25 +25,27 @@ public class MessageProcessor extends Thread {
                 Message message = inputMessageQueue.take();
                 for(Rule rule : rules){
                     boolean conditionMet = false;
-                    if(message.getName().equalsIgnoreCase(rule.getRequestName())){
+                    if(message.getName().equalsIgnoreCase(rule.getInputName())){
                         switch(rule.getComparator()){
                             case "eq" :
-                                if(message.getValue() == rule.getRequestValue()) conditionMet = true; break;
+                                if(message.getValue() == rule.getInputValue()) conditionMet = true; break;
                             case "ne" :
-                                if(message.getValue() != rule.getRequestValue()) conditionMet = true; break;
+                                if(message.getValue() != rule.getInputValue()) conditionMet = true; break;
                             case "gt" :
-                                if(message.getValue() > rule.getRequestValue()) conditionMet = true; break;
+                                if(message.getValue() > rule.getInputValue()) conditionMet = true; break;
                             case "ge" :
-                                if(message.getValue() >= rule.getRequestValue()) conditionMet = true; break;
+                                if(message.getValue() >= rule.getInputValue()) conditionMet = true; break;
                             case "lt" :
-                                if(message.getValue() < rule.getRequestValue()) conditionMet = true; break;
+                                if(message.getValue() < rule.getInputValue()) conditionMet = true; break;
                             case "le" :
-                                if(message.getValue() <= rule.getRequestValue()) conditionMet = true; break;
+                                if(message.getValue() <= rule.getInputValue()) conditionMet = true; break;
                             default :
                                 break;
                         }
                     }
-                    outputMessageQueue.add(new OutputMessage(rule.getOutMessageEndpoint(), new Message(rule.getResponseName(), rule.getResponseValue())));
+                    if(conditionMet){
+                        outputMessageQueue.add(new Message(rule.getOutputName(), rule.getOutputValue()));
+                    }
                 }
             } catch (Exception e){
                 e.printStackTrace();
