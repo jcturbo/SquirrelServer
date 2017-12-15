@@ -8,30 +8,42 @@ public class OutputProcessor extends Thread {
 
     private LinkedBlockingQueue<Message> outputMessageQueue;
     private ArrayList<Endpoint> endpoints;
+    private MessageLogRepository messageLogRepository;
     
-    public OutputProcessor(LinkedBlockingQueue<Message> p_outputMessageQueue, ArrayList<Endpoint> p_endpoints) {
+    public OutputProcessor(LinkedBlockingQueue<Message> p_outputMessageQueue, ArrayList<Endpoint> p_endpoints, MessageLogRepository p_messageLogRepository) {
         outputMessageQueue = p_outputMessageQueue;
         endpoints = p_endpoints;
+        messageLogRepository = p_messageLogRepository;
     }
 
     @Override
     public void run() {
         while (true) {
-            try {
+            try{
                 Message outputMessage = outputMessageQueue.take();
-                System.out.println("Send message to endpoint (" + outputMessage.getName()+ ")");
-                String endpointUrl = null;
-                for(Endpoint endpoint : endpoints){
-                    if(endpoint.getEndpointName().equalsIgnoreCase(outputMessage.getName())){
-                        endpointUrl = endpoint.getEndpointUrl();
-                        break;
+                try {
+                    System.out.println("Send output (" + outputMessage.getName()+ ") with value (" + outputMessage.getValue() + ")");
+                    String endpointUrl = null;
+                    for(Endpoint endpoint : endpoints){
+                        if(endpoint.getEndpointName().equalsIgnoreCase(outputMessage.getName())){
+                            endpointUrl = endpoint.getEndpointUrl();
+                            break;
+                        }
                     }
+                    if(endpointUrl != null){
+                        RestTemplate restTemplate = new RestTemplate();
+                        restTemplate.postForObject(endpointUrl, outputMessage, Message.class);
+                        MessageLog messageLog = new MessageLog("OUT", outputMessage.getName(), outputMessage.getValue(), "Success");
+                        messageLogRepository.save(messageLog);
+                    }
+                } catch (Exception e) {
+                    MessageLog messageLog = new MessageLog("OUT", outputMessage.getName(), outputMessage.getValue(), "Failed");
+                    messageLogRepository.save(messageLog);
+                    System.err.println("Failed to take send output message to endpoint.");
+                    e.printStackTrace();
                 }
-                if(endpointUrl != null){
-                    RestTemplate restTemplate = new RestTemplate();
-                    restTemplate.postForObject(endpointUrl, outputMessage, Message.class);
-                }
-            } catch (Exception e) {
+            }catch (Exception e){
+                System.err.println("Failed to take output message off queue.");
                 e.printStackTrace();
             }
         }

@@ -1,6 +1,7 @@
 package uk.co.squirrel.squirrelserver;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,6 +16,9 @@ public class Endpoints {
     @Autowired
     private Application application;
 
+    @Autowired
+    private MessageLogRepository messageLogRepository;
+        
     // NotifyEndpoint is used to send server that an output endpoint is available
     @RequestMapping(method=RequestMethod.POST, path="/notifyEndpoint")
     public Endpoint notifyPresents(@RequestBody Endpoint endpoint){
@@ -32,6 +36,8 @@ public class Endpoints {
     // Input for event messages
     @RequestMapping(method=RequestMethod.POST, path="/message")
     public void notifyEndpoint(@RequestBody Message message) {
+        MessageLog messageLog = new MessageLog("IN", message.getName(), message.getValue());
+        messageLogRepository.save(messageLog);
         application.addMessageToQueue(message);
     }
     

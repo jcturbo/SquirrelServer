@@ -13,6 +13,9 @@ public class Application {
     @Autowired
     private RuleRepository ruleRepository;
     
+    @Autowired
+    private MessageLogRepository messageLogRepository;
+    
     private ArrayList<Endpoint> endpoints;
     
     private final LinkedBlockingQueue<Message> inputMessageQueue;
@@ -34,7 +37,7 @@ public class Application {
     
     @PostConstruct
     public void runProcessors(){
-        outputProcessor = new OutputProcessor(outputMessageQueue, endpoints);
+        outputProcessor = new OutputProcessor(outputMessageQueue, endpoints, messageLogRepository);
         outputProcessor.start();
         messageProcessor = new MessageProcessor(inputMessageQueue, outputMessageQueue, ruleRepository);
         messageProcessor.start();
