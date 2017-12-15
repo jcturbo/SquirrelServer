@@ -19,7 +19,7 @@ public class Rule {
     private int requestValue;
     private String responseName;
     private int responseValue;
-    private String outMessageEndpointURL;
+    private String outMessageEndpoint;
 
     public String getRuleName() {
         return ruleName;
@@ -69,12 +69,12 @@ public class Rule {
         this.responseValue = responseValue;
     }
 
-    public String getOutMessageEndpointURL() {
-        return outMessageEndpointURL;
+    public String getOutMessageEndpoint() {
+        return outMessageEndpoint;
     }
 
-    public void setOutMessageEndpointURL(String outMessageEndpointURL) {
-        this.outMessageEndpointURL = outMessageEndpointURL;
+    public void setOutMessageEndpoint(String outMessageEndpoint) {
+        this.outMessageEndpoint = outMessageEndpoint;
     }
 
     public String getComparator() {

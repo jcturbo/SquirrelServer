@@ -3,10 +3,10 @@ package uk.co.squirrel.objects;
 public class OutputMessage {
 
     private Message message;
-    private String endpointUrl;
+    private String endpointName;
     
-    public OutputMessage(String p_endpointUrl, Message p_message){
-        endpointUrl = p_endpointUrl;
+    public OutputMessage(String p_endpointName, Message p_message){
+        endpointName = p_endpointName;
         message = p_message;
     }
 
@@ -18,12 +18,12 @@ public class OutputMessage {
         this.message = message;
     }
 
-    public String getEndpointUrl() {
-        return endpointUrl;
+    public String getEndpointName() {
+        return endpointName;
     }
 
-    public void setEndpointUrl(String endpointUrl) {
-        this.endpointUrl = endpointUrl;
+    public void setEndpointName(String endpointName) {
+        this.endpointName = endpointName;
     }
     
 }

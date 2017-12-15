@@ -1,17 +1,20 @@
 package uk.co.squirrel.squirrelserver;
 
+import java.util.ArrayList;
 import java.util.concurrent.LinkedBlockingQueue;
-import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
+import uk.co.squirrel.objects.Endpoint;
 import uk.co.squirrel.objects.Message;
 import uk.co.squirrel.objects.OutputMessage;
 
-public class OutputProcessor implements Runnable {
+public class OutputProcessor extends Thread {
 
     private LinkedBlockingQueue<OutputMessage> outputMessageQueue;
-
-    public OutputProcessor(LinkedBlockingQueue<OutputMessage> p_outputMessageQueue) {
+    private ArrayList<Endpoint> endpoints;
+    
+    public OutputProcessor(LinkedBlockingQueue<OutputMessage> p_outputMessageQueue, ArrayList<Endpoint> p_endpoints) {
         outputMessageQueue = p_outputMessageQueue;
+        endpoints = p_endpoints;
     }
 
     @Override
@@ -19,9 +22,18 @@ public class OutputProcessor implements Runnable {
         while (true) {
             try {
                 OutputMessage outputMessage = outputMessageQueue.take();
-                System.out.println("Send message to endpoint (" + outputMessage.getEndpointUrl() + ")");
-                RestTemplate restTemplate = new RestTemplate();
-                restTemplate.postForObject(outputMessage.getEndpointUrl(), outputMessage.getMessage(), Message.class);
+                System.out.println("Send message to endpoint (" + outputMessage.getEndpointName() + ")");
+                String endpointUrl = null;
+                for(Endpoint endpoint : endpoints){
+                    if(endpoint.getEndpointName().equalsIgnoreCase(outputMessage.getEndpointName())){
+                        endpointUrl = endpoint.getEndpointUrl();
+                        break;
+                    }
+                }
+                if(endpointUrl != null){
+                    RestTemplate restTemplate = new RestTemplate();
+                    restTemplate.postForObject(endpointUrl, outputMessage.getMessage(), Message.class);
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }

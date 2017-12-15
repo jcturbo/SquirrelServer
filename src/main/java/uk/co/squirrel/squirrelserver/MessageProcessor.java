@@ -45,7 +45,7 @@ public class MessageProcessor extends Thread {
                                 break;
                         }
                     }
-                    outputMessageQueue.add(new OutputMessage(rule.getOutMessageEndpointURL(), new Message(rule.getResponseName(), rule.getResponseValue())));
+                    outputMessageQueue.add(new OutputMessage(rule.getOutMessageEndpoint(), new Message(rule.getResponseName(), rule.getResponseValue())));
                 }
             } catch (Exception e){
                 e.printStackTrace();

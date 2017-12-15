@@ -6,6 +6,7 @@ import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import uk.co.squirrel.objects.Endpoint;
 import uk.co.squirrel.objects.Message;
 import uk.co.squirrel.objects.OutputMessage;
 
@@ -15,9 +16,11 @@ public class Application {
     @Autowired
     private RuleRepository ruleRepository;
     
+    private ArrayList<Endpoint> endpoints;
+    
     private final LinkedBlockingQueue<Message> inputMessageQueue;
     private final LinkedBlockingQueue<OutputMessage> outputMessageQueue;
-    private final Thread outputProcessor;
+    private Thread outputProcessor;
     private MessageProcessor messageProcessor;
             
     public static void main(String[] args){
@@ -27,12 +30,14 @@ public class Application {
     public Application() {
         inputMessageQueue = new LinkedBlockingQueue<>();
         outputMessageQueue = new LinkedBlockingQueue<>();
-        outputProcessor = new Thread(new OutputProcessor(outputMessageQueue));
+        outputProcessor = null;
         messageProcessor = null;
+        endpoints = new ArrayList<>();
     }
     
     @PostConstruct
     public void runProcessors(){
+        outputProcessor = new OutputProcessor(outputMessageQueue, endpoints);
         outputProcessor.start();
         messageProcessor = new MessageProcessor(inputMessageQueue, outputMessageQueue, ruleRepository);
         messageProcessor.start();
@@ -51,4 +56,22 @@ public class Application {
     public ArrayList<Rule> setRules(ArrayList<Rule> newRules){
         return messageProcessor.setRules(newRules);
     }
+    
+    public ArrayList<Endpoint> getEndpoints(){
+        return endpoints;
+    }
+    
+    public void addEndpoint(Endpoint newEndpoint){
+        boolean endpointAlreadyExists = false;
+        for(Endpoint endpoint : endpoints){
+            if(endpoint.getEndpointName().equalsIgnoreCase(newEndpoint.getEndpointName())){
+                endpointAlreadyExists = true;
+                break;
+            }
+        }
+        if(!endpointAlreadyExists){
+            endpoints.add(newEndpoint);
+        }
+    }
+    
 }
