@@ -39,7 +39,7 @@ public class Application {
     public void runProcessors(){
         outputProcessor = new OutputProcessor(outputMessageQueue, endpoints, messageLogRepository);
         outputProcessor.start();
-        messageProcessor = new MessageProcessor(inputMessageQueue, outputMessageQueue, ruleRepository);
+        messageProcessor = new MessageProcessor(inputMessageQueue, outputMessageQueue, endpoints, ruleRepository);
         messageProcessor.start();
     }
     

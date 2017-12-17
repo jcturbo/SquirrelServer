@@ -9,12 +9,14 @@ public class MessageProcessor extends Thread {
     private ArrayList<Rule> rules;
     private LinkedBlockingQueue<Message> inputMessageQueue;
     private LinkedBlockingQueue<Message> outputMessageQueue;
+    private ArrayList<Endpoint> endpoints;
             
-    public MessageProcessor(LinkedBlockingQueue<Message> p_inputMessageQueue, LinkedBlockingQueue<Message> p_outputMessageQueue, RuleRepository p_ruleRepository){
+    public MessageProcessor(LinkedBlockingQueue<Message> p_inputMessageQueue, LinkedBlockingQueue<Message> p_outputMessageQueue, ArrayList<Endpoint> p_endpoints, RuleRepository p_ruleRepository){
         inputMessageQueue = p_inputMessageQueue;
         outputMessageQueue = p_outputMessageQueue;
         ruleRepository = p_ruleRepository;
         rules = new ArrayList<>();
+        endpoints = p_endpoints;
         loadRules();
     }
     
@@ -23,6 +25,16 @@ public class MessageProcessor extends Thread {
         while(true){
             try{
                 Message message = inputMessageQueue.take();
+                
+                // If the input message is the same as a known output pass message directly on
+                for(Endpoint endpoint : endpoints){
+                    if(endpoint.getEndpointName().equalsIgnoreCase(message.getName())){
+                        outputMessageQueue.add(message);
+                        break;
+                    }
+                }
+
+                // Check if message meets any rules
                 for(Rule rule : rules){
                     boolean conditionMet = false;
                     if(message.getName().equalsIgnoreCase(rule.getInputName())){
