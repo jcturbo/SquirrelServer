@@ -1,13 +1,20 @@
-package uk.co.squirrel.squirrelserver;
+package uk.co.techsquirrel.squirrelserver;
 
+import uk.co.techsquirrel.squirrelserver.repos.MessageLogRepository;
+import uk.co.techsquirrel.squirrelserver.repos.Rule;
+import uk.co.techsquirrel.squirrelserver.repos.RuleRepository;
+import uk.co.techsquirrel.squirrelserver.objects.Endpoint;
+import uk.co.techsquirrel.squirrelserver.objects.Message;
 import java.util.ArrayList;
 import java.util.concurrent.LinkedBlockingQueue;
 import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
+@ComponentScan(basePackages = "uk.co.squirrel.**.*")
 public class Application {
 
     @Autowired
@@ -22,6 +29,7 @@ public class Application {
     private final LinkedBlockingQueue<Message> outputMessageQueue;
     private Thread outputProcessor;
     private MessageProcessor messageProcessor;
+    private final Alarm alarm;
             
     public static void main(String[] args){
         SpringApplication.run(Application.class, args);
@@ -33,6 +41,7 @@ public class Application {
         outputProcessor = null;
         messageProcessor = null;
         endpoints = new ArrayList<>();
+        alarm = new Alarm();
     }
     
     @PostConstruct

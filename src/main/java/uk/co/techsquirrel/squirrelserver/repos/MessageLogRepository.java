@@ -1,4 +1,4 @@
-package uk.co.squirrel.squirrelserver;
+package uk.co.techsquirrel.squirrelserver.repos;
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Component;

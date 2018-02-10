@@ -1,5 +1,9 @@
-package uk.co.squirrel.squirrelserver;
+package uk.co.techsquirrel.squirrelserver;
 
+import uk.co.techsquirrel.squirrelserver.repos.MessageLog;
+import uk.co.techsquirrel.squirrelserver.repos.MessageLogRepository;
+import uk.co.techsquirrel.squirrelserver.objects.Endpoint;
+import uk.co.techsquirrel.squirrelserver.objects.Message;
 import java.util.ArrayList;
 import java.util.concurrent.LinkedBlockingQueue;
 import org.springframework.web.client.RestTemplate;

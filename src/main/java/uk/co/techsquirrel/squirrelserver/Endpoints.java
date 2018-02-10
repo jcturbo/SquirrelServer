@@ -1,7 +1,11 @@
-package uk.co.squirrel.squirrelserver;
+package uk.co.techsquirrel.squirrelserver;
 
+import uk.co.techsquirrel.squirrelserver.repos.MessageLog;
+import uk.co.techsquirrel.squirrelserver.repos.MessageLogRepository;
+import uk.co.techsquirrel.squirrelserver.repos.Rule;
+import uk.co.techsquirrel.squirrelserver.objects.Endpoint;
+import uk.co.techsquirrel.squirrelserver.objects.Message;
 import java.util.ArrayList;
-import java.util.Calendar;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;

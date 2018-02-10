@@ -1,4 +1,4 @@
-package uk.co.squirrel.squirrelserver;
+package uk.co.techsquirrel.squirrelserver.repos;
 
 import java.util.Calendar;
 import java.util.Date;

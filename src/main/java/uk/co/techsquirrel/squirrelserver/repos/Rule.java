@@ -1,4 +1,4 @@
-package uk.co.squirrel.squirrelserver;
+package uk.co.techsquirrel.squirrelserver.repos;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
