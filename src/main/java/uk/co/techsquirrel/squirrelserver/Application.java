@@ -14,7 +14,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
-@ComponentScan(basePackages = "uk.co.squirrel.**.*")
+@ComponentScan(basePackages = "uk.co.techsquirrel.**.*")
 public class Application {
 
     @Autowired
